@@ -1,6 +1,17 @@
 # RN64TexTools
 Tools for viewing and converting N64 textures
 
+<div style="display: flex;">
+    <img src="./static/screenshot01.png" width="320">
+    <img src="./static/screenshot02.png" width="320">
+    <img src="./static/screenshot03.png" width="320">
+</div>
+<div style="display: flex;">
+    <img src="./static/screenshot04.png" width="320">
+    <img src="./static/screenshot05.png" width="320">
+    <img src="./static/screenshot06.png" width="320">
+</div>
+
 ## Building
 
 Build process of RN64TexTools requires only the Lazarus IDE which can be installed under Debian-based systems with:
