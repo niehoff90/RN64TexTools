@@ -469,29 +469,31 @@ end;
 
 procedure TFormMain.RareUnzip(ToStream: TStream; Filename: string);
 var
-  FileStream: TFileStream;
-  CompressedData: TMemoryStream;
-  DecompressionStream: TDecompressionStream;
+  FileStream: TFileStream = nil;
+  CompressedData: TMemoryStream = nil;
+  DecompressionStream: TDecompressionStream = nil;
   len: cardinal;
 begin
   try
-    try
-      FileStream := TFileStream.Create(Filename, fmOpenRead);
-      len := SwapEndian(FileStream.ReadDWord);
+    FileStream := TFileStream.Create(Filename, fmOpenRead);
+    len := SwapEndian(FileStream.ReadDWord);
 
-      CompressedData := TMemoryStream.Create;
-      CompressedData.CopyFrom(FileStream, FileStream.Size - 4);
-      CompressedData.Position := 0;
-      DecompressionStream := TDecompressionStream.Create(CompressedData, True);
-      ToStream.CopyFrom(DecompressionStream, len);
-    except
-      ShowMessage('Yes');
-    end;
-  finally
-    DecompressionStream.Free;
-    CompressedData.Free;
-    FileStream.Free;
+    CompressedData := TMemoryStream.Create;
+    CompressedData.CopyFrom(FileStream, FileStream.Size - 4);
+    CompressedData.Position := 0;
+    DecompressionStream := TDecompressionStream.Create(CompressedData, True);
+    ToStream.CopyFrom(DecompressionStream, len);
+  except
+    on E: Exception do
+      WriteLn(StdErr, 'RareUnzip(): ' + E.Message);
   end;
+
+  if Assigned(DecompressionStream) then
+    DecompressionStream.Free;
+  if Assigned(CompressedData) then
+    CompressedData.Free;
+  if Assigned(FileStream) then
+    FileStream.Free;
 end;
 
 
